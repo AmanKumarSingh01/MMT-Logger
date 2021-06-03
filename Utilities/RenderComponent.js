@@ -16,6 +16,7 @@ const RenderComponent = props => {
   if(Array.isArray(props.data)){
     type = 'array'
   }
+  console.log(typeof props.data, "amsn")
   let Comp = Component[type];
   return <View>{<Comp {...props} />}</View>;
 };

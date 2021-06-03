@@ -97,7 +97,7 @@ export default function LoggerScreen(props) {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1}}>
-        <View style={[styles.main, styles.headerStyle]}>
+        <View style={[styles.main, styles.headerStyle, styles.marginBotton]}>
           <View>
             <Button title="X" onPress={onBackPress}></Button>
           </View>
@@ -127,10 +127,10 @@ export default function LoggerScreen(props) {
           }
           {logs.map((ele, index) => {
             return (
-              <TouchableHighlight
+              <TouchableHighlight 
                 underlayColor="transparent"
                 onLongPress={() => handleCardLongPress(index)}
-                key={index}>
+                key={Math.random()}>
                 <ScrollView style={[styles.log, styles[ele.type], styles.relativeBlock]}>
                   <Text style={[styles.locationText]} >screen : {ele.screen}</Text>
                   <RenderComponent

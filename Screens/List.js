@@ -8,102 +8,112 @@ import {
   ActivityIndicator,
   FlatList,
   SafeAreaView,
+  TouchableHighlight
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import jsonPlaceholderAPI from '../Constants/Apicaller';
 import Logger from '../Utilities/Log';
-
+import {styles} from "./../Utilities/GenericStyles"
 export default function List() {
-  const [start, setStart] = (0)
   const [data, setData] = useState([]);
   const [isActive, setIsActive] = useState(true);
+  const [users, setUsers] = useState([]);
   const [dataToBeShown, setDataToBeShown] = useState([]);
   const [dataNum, setDataNum] = useState(100);
+  const [start, setStart] = useState(0);
   const title = 'To-Do List';
 
   useEffect(() => {
-    jsonPlaceholderAPI(`/posts?_start=${start}&_limit=5`)
-      .then(result => {
-        setData(result.data);
-        // setIsActive(prev => !prev)
-      }).catch(error => {
-        console.error(error)
-      })
-    // fetch('https://jsonplaceholder.typicode.com/photos')
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     setData(data.slice(0, 200));
-    //     setDataToBeShown(data.slice(0, dataNum));
-    //     setIsActive(false);
-    //     Logger.log(
-    //       {
-    //         date: new Date().toString(),
-    //         data: 'API call made API call made API call made API call made API call made API call made API call made API call made API call made API call made API call made API call made API call made API call made ',
-    //         context: {
-    //           numOfRows: data.length.toString(),
-    //         },
-    //       },
-    //       'error',
-    //     );
-    //   }).catch(error => {
-    //     setIsActive(false)
-    //     Logger.log(
-    //       error.message,
-    //       'error',
-    //     );
-    //   });
-    
+    loadMore(true);
+    getuserData();
   }, []);
 
   const onPrevPress = () => {
     Actions.push('initial');
   };
+  
+  const getuserData = () => {
+    jsonPlaceholderAPI('/users')
+      .then(result => {
+        setUsers(result.data);
+        console.log(result.data)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
 
-  const loadMore = () => {
-    setDataToBeShown(data.slice(0, dataNum + 30));
-    setDataNum(state => state + 30);
+  const loadMore = (initial = false) => {
+    jsonPlaceholderAPI(`/posts?_start=${start}&_limit=30`)
+      .then(result => {
+        console.log(result.data)
+        setStart(prev => prev + 30);
+        setData(prev=>[...prev, ...result.data])
+        if(initial) setIsActive(prev=>!prev);
+        Logger.log({
+          data : "Api call sucessfully happened, called json placeholder api",
+          time : new Date().toString(),
+          context : {
+            startdata : start,
+            limit : 30
+          }
+        }, 'information');
+      }).catch(error => {
+        console.log(error, typeof error, ...error , "aman")
+        Logger.log(error,'error')
+      })
   };
 
   return (
     <SafeAreaView style={{flex: 1}}>
       {isActive ? (
-        <View style={[styles.container, styles.horizontal]}>
+        <View style={[stylesheet.container, stylesheet.horizontal]}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
         <View style={{flex: 1}}>
-          <View style={styles.main}>
-            <Text style={styles.text}>{title}</Text>
+          <View style={[styles.main, styles.headerStyle]}>
+            <Button title="<" onPress={onPrevPress} />
+            <Text style={stylesheet.text}>{title}</Text>
+            <View/>
           </View>
+          
           <FlatList
-            style={{flex: 2}}
             data={data}
-            renderItem={({item}) => (
-              <View style={(styles.list, styles.main)}>
-                <Text>
-                 {item.title}
-                </Text>
-              </View>
+            renderItem= {({item}) => (
+              <TouchableHighlight 
+                style={stylesheet.card}
+                underlayColor="transparent"
+                onPress={()=>{
+                  Actions.push('details', {item})
+                }}
+                key={Math.random()}>
+                <View key={Math.random()}>
+                  <Text style={{marginVertical : 10}} >{item.title}</Text>
+                  <Text style={stylesheet.authorName} >- {
+                    users.filter(user => user?.id === item?.userId)[0]?.name
+                  }</Text>
+                </View>
+              </TouchableHighlight>
             )}
-            initialNumToRender={100}
-            onEndReached={loadMore}
             onEndReachedThreshold={0.5}
+            initialNumToRender={10}
+            onEndReached={()=>loadMore(false)}
           />
-          <Button title="Previous Page" onPress={onPrevPress} />
         </View>
       )}
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+const stylesheet = StyleSheet.create({
   list: {
     padding: 10,
   },
   main: {
-    margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
+    // flexDirection : 'row'
   },
   text: {
     color: 'red',
@@ -119,4 +129,30 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: 10,
   },
+  card : {
+    // height : 50,
+    // width : 90,
+    padding : 10,
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.00,
+    elevation: 10,
+    backgroundColor : '#d5e1df',
+    marginHorizontal : 10,
+    marginVertical : 10,
+    borderRadius : 10,
+    position : 'relative'
+  },
+  authorName  :  {
+    position : 'absolute',
+    zIndex : 100,
+    bottom : 5,
+    right: 5,
+    color : 'red',
+    fontSize : 12
+  }
 });

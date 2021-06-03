@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {Router, Scene} from 'react-native-router-flux';
+import Details from './Screens/Details';
 import Initial from './Screens/Initial';
 import List from './Screens/List';
 import LoggerScreen from './Screens/Logger';
@@ -37,6 +38,7 @@ const App = () => {
         <Scene key="initial" component={Initial} initial hideNavBar />
         <Scene key="list" component={List} hideNavBar />
         <Scene key="logger" component={LoggerScreen} hideNavBar />
+        <Scene key= "details" component={Details} hideNavBar />
       </Scene>
     </Router>
   );

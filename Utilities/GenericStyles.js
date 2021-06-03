@@ -33,6 +33,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.5,
     width: 0.9 * width,
+    // marginVertical : 10
   },
   warning: {
     backgroundColor: 'rgb(255, 244, 229)',
@@ -58,7 +59,7 @@ export const styles = StyleSheet.create({
   },
   headerStyle : {
     padding : 12,
-    backgroundColor :'rgb(232, 244, 253)',
+    backgroundColor :'#deeaee',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -94,5 +95,8 @@ export const styles = StyleSheet.create({
     lineHeight : 12,
     color :'red',
     zIndex : 10
+  },
+  marginBotton :  {
+    marginBottom : 10
   }
 });
