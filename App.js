@@ -1,5 +1,4 @@
 import {Router, Scene} from 'react-native-router-flux';
-import ErrorBoundary from './ErrorBoundaries';
 import Details from './Screens/Details';
 import Initial from './Screens/Initial';
 import List from './Screens/List';
@@ -33,7 +32,6 @@ const App = () => {
   }, []);
 
   return (
-    <ErrorBoundary>
     <Router>
       <Scene key="root">
         <Scene key="initial" component={Initial} initial hideNavBar />
@@ -42,7 +40,6 @@ const App = () => {
         <Scene key= "details" component={Details} hideNavBar />
       </Scene>
     </Router>
-    </ErrorBoundary>
   );
 };
 
