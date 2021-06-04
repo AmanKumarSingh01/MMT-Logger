@@ -111,25 +111,17 @@ export default function LoggerScreen(props) {
         <ScrollView style={{flex: 1}}>
           {
             displayLogs&&(
-              <View>
-                <View style={[styles.logsMenustyle]} >
-                  <Button  title="Reset Logs" onPress={onResetLogsPress} />
-                  <View style={[styles.main]} >
-                    <Text>Logger maximum value : </Text> 
-                    <TextInput
-                      keyboardType="numeric"
-                      style = {styles.TextInput}
-                      onChangeText={(e)=> handleLoggertextChange(e)}
-                      defaultValue= {loggerLimit.toString()}
-                    />  
-                  </View>  
-              </View>
               <View style={[styles.logsMenustyle]} >
-                <TouchableHighlight><Text>all</Text></TouchableHighlight>
-                <TouchableHighlight><Text>Info</Text></TouchableHighlight>
-                <TouchableHighlight><Text>Error</Text></TouchableHighlight>
-                <TouchableHighlight><Text>Warning</Text></TouchableHighlight>
-              </View>
+                <Button  title="Reset Logs" onPress={onResetLogsPress} />
+                <View style={[styles.main]} >
+                  <Text>Logger maximum value : </Text> 
+                  <TextInput
+                    keyboardType="numeric"
+                    style = {styles.TextInput}
+                    onChangeText={(e)=> handleLoggertextChange(e)}
+                    defaultValue= {loggerLimit.toString()}
+                  />  
+                </View>  
               </View>
             )
           }

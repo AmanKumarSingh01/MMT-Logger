@@ -98,5 +98,5 @@ export const styles = StyleSheet.create({
   },
   marginBotton :  {
     marginBottom : 10
-  }
+  },
 });
