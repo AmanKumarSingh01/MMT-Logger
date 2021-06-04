@@ -11,7 +11,6 @@ const App = () => {
       node1: 'node1 Data',
       node2: 'node2 Data',
       node3: {
-        'node3.1': 'node3.1 data',
         'node3.2': 'node3.2 data',
         'node3.3': {
           'node3.3.1': 'node3.1 data',
@@ -28,7 +27,7 @@ const App = () => {
       data: 'App loaded',
     });
     Logger.log(obj);
-    Logger.log([1,2,3,{aman : "singh"},5,6,7,8,9,10])
+    Logger.log([1, 2, 3, {aman: 'singh'}, 5, 6, 7, 8, 9, 10]);
   }, []);
 
   return (
@@ -37,7 +36,7 @@ const App = () => {
         <Scene key="initial" component={Initial} initial hideNavBar />
         <Scene key="list" component={List} hideNavBar />
         <Scene key="logger" component={LoggerScreen} hideNavBar />
-        <Scene key= "details" component={Details} hideNavBar />
+        <Scene key="details" component={Details} hideNavBar />
       </Scene>
     </Router>
   );
