@@ -39,12 +39,13 @@ export default function List() {
         console.log(result.data)
       })
       .catch(error => {
+        setIsActive(false)
         console.error(error)
       })
   }
 
   const loadMore = (initial = false) => {
-    jsonPlaceholderAPI(`/posts?_start=${start}&_limit=30`)
+    jsonPlaceholderAPI.get(`/posts111?_start=${start}&_limit=30`)
       .then(result => {
         console.log(result.data)
         setStart(prev => prev + 30);
@@ -59,8 +60,9 @@ export default function List() {
           }
         }, 'information');
       }).catch(error => {
-        console.log(error, typeof error, ...error , "aman")
-        Logger.log(error,'error')
+        console.log(error, typeof error , "aman")
+        setIsActive(prev=>!prev)
+        Logger.err(error, "aman's errror", "nesting")
       })
   };
 

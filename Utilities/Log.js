@@ -24,29 +24,80 @@ class Log {
    * error
    * warning
    */
-  log = (data, type = 'information') => {
-    //error handling 
-    if (!type == 'information' || !type == 'error' || !type == 'warning') {
-      return 'Not a valid log type';
-    }
+
+  //normal log function
+   log (data) {
+    let type = "information"
+    let args= [...arguments]
+   
     //checking the local stroage 
     LocalStorage.load({
       key : 'loggerdev',
     }).then( res => {
       if(res){
-        if (this.logs.length >= this.limit) {
-          this.reset();
-        }
-        this.logs.push({
-          data,
-          type,
-          screen : Actions.currentScene
-        });  
+        args.map(i =>{
+          if (this.logs.length >= this.limit) {
+            this.reset();
+          }
+          this.logs.push({
+            data : i,
+            type,
+            screen : Actions.currentScene
+          });  
+        })
       }
     }).catch(err => {
       console.log("Error found", err);
     })
   };
+
+  //error function 
+  err (data) {
+    let type = 'error';
+    let args = [...arguments]
+    LocalStorage.load({
+      key : 'loggerdev',
+    }).then( res => {
+      if(res){
+        args.map(i =>{
+          if (this.logs.length >= this.limit) {
+            this.reset();
+          }
+          if(i instanceof Error) i = i.stack;
+          this.logs.push({
+            data : i,
+            type,
+            screen : Actions.currentScene
+          }); 
+        }) 
+      }
+    }).catch(err => {
+      console.log("Error found", err);
+    })
+  }
+
+  warning (data) {
+    let type = 'error';
+    let args = [...arguments]
+    LocalStorage.load({
+      key : 'loggerdev',
+    }).then( res => {
+      if(res){
+        args.map(i =>{
+          if (this.logs.length >= this.limit) {
+            this.reset();
+          }
+          this.logs.push({
+            data : i,
+            type,
+            screen : Actions.currentScene
+          }); 
+        }) 
+      }
+    }).catch(err => {
+      console.log("Error found", err);
+    })
+  }
 
   deleteLog = async(idx) => {
     await this.logs.splice(idx, 1);
